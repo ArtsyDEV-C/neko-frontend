@@ -1,4 +1,5 @@
-const socket = io('http://localhost:5000');
+const socket = io("https://your-backend.up.railway.app");
+
 
 socket.on('connect', () => {
   console.log('Connected to Socket.IO server');
