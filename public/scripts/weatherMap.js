@@ -12,7 +12,7 @@ L.marker([12.9716, 77.5946]).addTo(map).bindPopup("You're here!").openPopup();
 
 // Function to fetch weather data from the backend for a specific lat, lon
 async function fetchWeather(lat, lon) {
-    const response = await fetch(`/api/weather?lat=${lat}&lon=${lon}`);
+    const response = await fetch(`https://your-backend.up.railway.app/api/weather?lat=${lat}&lon=${lon}`);
     const data = await response.json();
 
     if (data.cod === 200) {
