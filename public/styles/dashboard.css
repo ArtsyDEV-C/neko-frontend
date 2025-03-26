@@ -1,0 +1,29 @@
+/* ...existing code... */
+
+/* Loading Indicator */
+#loading-indicator {
+    text-align: center;
+    font-size: 18px;
+    color: #007bff;
+    margin: 20px 0;
+}
+
+/* Weather Card */
+.weather-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px 0;
+    text-align: center;
+}
+
+.weather-card h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.weather-card p {
+    font-size: 16px;
+    margin: 5px 0;
+}

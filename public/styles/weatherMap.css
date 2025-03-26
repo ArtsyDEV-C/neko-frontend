@@ -1,0 +1,44 @@
+/* Map Container */
+#weather-map-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 800px;
+    margin: 20px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#weather-map {
+    width: 100%;
+    height: 500px;
+    border-radius: 10px;
+}
+
+/* Map Controls */
+#map-controls {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+#map-controls input[type="text"] {
+    width: 70%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+#map-controls button {
+    padding: 10px;
+    font-size: 16px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#map-controls button:hover {
+    background-color: #218838;
+}

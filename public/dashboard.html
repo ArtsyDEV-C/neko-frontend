@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="styles/global.css">
+    <link rel="stylesheet" href="styles/dashboard.css"> <!-- Link to dashboard-specific styles -->
+</head>
+<body>
+    <div id="dashboard-container">
+        <header>
+            <h1>Welcome to Your Dashboard</h1>
+            <button id="logout-btn">Logout</button>
+        </header>
+
+        <!-- Loading Indicator -->
+        <div id="loading-indicator" style="display: none;">Loading...</div>
+
+        <!-- User Information Section -->
+        <div id="user-info">
+            <h2>User Information</h2>
+            <p><strong>Name:</strong> <span id="user-name">Loading...</span></p>
+            <p><strong>Email:</strong> <span id="user-email">Loading...</span></p>
+        </div>
+
+        <!-- Weather Information Section -->
+        <div id="weather-info">
+            <h2>Your Weather Data</h2>
+            <p><strong>City:</strong> <span id="weather-city">Loading...</span></p>
+            <p><strong>Temperature:</strong> <span id="weather-temp">Loading...</span>°<span id="weather-unit">C</span></p>
+            <p><strong>Weather Description:</strong> <span id="weather-desc">Loading...</span></p>
+        </div>
+
+        <!-- Alerts Section -->
+        <div id="alerts-info">
+            <h2>Your Weather Alerts</h2>
+            <ul id="alerts-list">
+                <!-- Alerts will be dynamically added here -->
+            </ul>
+        </div>
+
+        <!-- Preferences Section -->
+        <div id="preferences-info">
+            <h2>Your Preferences</h2>
+            <p><strong>Preferred Unit:</strong> <span id="preferred-unit">Loading...</span></p>
+        </div>
+
+    </div>
+
+    <script src="scripts/dashboard.js"></script> <!-- Link to dashboard-specific JavaScript -->
+</body>
+</html>

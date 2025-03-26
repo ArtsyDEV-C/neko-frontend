@@ -1,0 +1,35 @@
+/* Business Analytics Container */
+#business-info-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 800px;
+    margin: 20px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#industry-selection {
+    margin-bottom: 20px;
+}
+
+#industry-selection label {
+    font-size: 16px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+#industry-selection select {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+#industry-data {
+    margin-top: 20px;
+}
+
+#industry-weather-data p {
+    font-size: 16px;
+    margin-bottom: 10px;
+}

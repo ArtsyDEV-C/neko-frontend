@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Map</title>
+    <link rel="stylesheet" href="styles/global.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+<body>
+    <div id="weather-map-container">
+        <h1>Interactive Weather Map</h1>
+        <div id="weather-map" style="height: 500px;"></div>
+        <div id="map-controls">
+            <input type="text" id="location-input" placeholder="Enter location">
+            <button id="search-location-btn">Search</button>
+        </div>
+    </div>
+    
+    <div id="weather-info">
+        <h2 id="city-name"></h2>
+        <p id="temp"></p>
+        <p id="weather-desc"></p>
+    </div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io("http://localhost:5000");
+      socket.on("weather-alert", (data) => {
+        alert(data.msg);
+      });
+    </script>
+    <script src="scripts/weatherMap.js"></script>
+    <script src="scripts/traffic.js"></script>
+    <script src="scripts/socketClient.js"></script>
+</body>
+</html>

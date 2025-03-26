@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Weather Analytics</title>
+    <link rel="stylesheet" href="styles/global.css">
+</head>
+<body>
+    <div id="business-info-container">
+        <h1>Industry-Specific Weather Analytics</h1>
+        
+        <div id="industry-selection">
+            <label for="industry">Select Industry:</label>
+            <select id="industry">
+                <option value="agriculture">Agriculture</option>
+                <option value="logistics">Logistics</option>
+                <option value="tourism">Tourism</option>
+                <option value="construction">Construction</option>
+            </select>
+        </div>
+        
+        <div id="industry-data">
+            <!-- This will dynamically update based on the selected industry -->
+            <p id="industry-description">Choose an industry to view weather analytics.</p>
+            <div id="loading-indicator" style="display: none;">Loading...</div>
+            <div id="industry-weather-data">
+                <!-- Weather data specific to the industry will go here -->
+            </div>
+        </div>
+    </div>
+    
+    <script src="scripts/business.js"></script>
+</body>
+</html>
