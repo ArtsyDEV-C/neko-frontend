@@ -5,7 +5,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 async function fetchTrafficData(lat, lon) {
-    const response = await fetch(`/api/traffic?lat=${lat}&lon=${lon}`);
+    const response = await fetch(`https://your-backend.up.railway.app/api/traffic?lat=${lat}&lon=${lon}`);
     const data = await response.json();
     // Process and display traffic data on the map
     // Example: Add a marker for traffic data
