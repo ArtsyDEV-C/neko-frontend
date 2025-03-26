@@ -2,7 +2,7 @@
 
 async function sendAlert(message) {
     try {
-        const response = await fetch("/api/send-alert", {
+        const response = await fetch("https://your-backend.up.railway.app/api/send-alert"), {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
