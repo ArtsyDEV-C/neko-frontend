@@ -6,7 +6,7 @@ document.getElementById("industry").addEventListener("change", function () {
 async function fetchIndustryData(industry) {
     document.getElementById("loading-indicator").style.display = "block";
     try {
-        const response = await fetch(`/api/business/weather?industry=${industry}`, {
+        const response = await fetch(`https://your-backend.up.railway.app/api/business/weather?industry=${industry}`), {
             headers: {
                 "Authorization": `Bearer ${localStorage.getItem("token")}`
             }
