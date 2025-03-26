@@ -2,7 +2,7 @@
 
 async function getAnalytics() {
     try {
-        const response = await fetch("/api/analytics");
+        const response = await fetch("https://your-backend.up.railway.app/api/analytics");
         const data = await response.json();
 
         if (data) {
