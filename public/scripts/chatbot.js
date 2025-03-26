@@ -2,7 +2,7 @@ async function getChatbotResponse(message) {
     if (!message.trim()) return;
 
     try {
-        const response = await fetch("/api/chatbot/response", {
+        const response = await fetch("https://your-backend.up.railway.app/api/chatbot/response"), {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
