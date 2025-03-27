@@ -1,4 +1,4 @@
-const apiKey = 'YOUR_OPENWEATHER_API_KEY'; // Replace with your API key
+const apiKey = "2149cbc5da7384b8ef7bcccf62b0bf68"; // Replace with your API key
 
 const searchInput = document.getElementById('search-input');
 const searchButton = document.getElementById('search-button');
