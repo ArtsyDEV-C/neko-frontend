@@ -1,35 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Weather Alerts</title>
-    <link rel="stylesheet" href="styles/global.css">
-    <link rel="stylesheet" href="styles/alerts.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Neko Global Weather</title>
+  <link rel="stylesheet" href="styles/global.css" />
 </head>
 <body>
-    <video id="weather-video" autoplay loop muted>
-        <source src="videos/others/default.mp4" type="video/mp4">
-    </video>
 
-    <audio id="background-audio" autoplay loop>
-        <source src="music/default.mp3" type="audio/mp3">
-    </audio>
-
-    <div id="weather-info">
-        <h1>Weather Information</h1>
-        <input type="text" id="city-input" placeholder="Enter city name">
-        <button id="search-btn">Search</button>
-
-        <div>
-            <h2 id="weather-temp">Temperature: --</h2>
-            <p id="weather-desc">Description: --</p>
-            <p id="weather-humidity">Humidity: --</p>
-            <p id="weather-wind">Wind Speed: --</p>
-            <img id="weather-icon" alt="Weather Icon" src="" />
-        </div>
+  <!-- 🌤️ NAVIGATION BAR -->
+  <nav class="navbar">
+    <div class="logo">
+      <video src="videos/logo.mp4" autoplay loop muted></video>
+      <h1>Neko Global Weather</h1>
     </div>
-    
-    <script src="scripts/alerts.js"></script>
+    <ul class="nav-links">
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="weatherMap.html">Weather Map</a></li>
+      <li><a href="business.html">Industry Forecasts</a></li>
+      <li><a href="chatbot.html">Chatbot</a></li>
+      <li><a href="weatherAdvisor.html">Alerts & Advice</a></li>
+    </ul>
+  </nav>
+
+  <!-- 🔍 SEARCH SECTION -->
+  <section class="search-section">
+    <input type="text" id="search-input" placeholder="Search City..." />
+    <button id="search-button">Search</button>
+    <video src="videos/search.mp4" autoplay muted loop class="cat-animation"></video>
+  </section>
+
+  <!-- 🌇 WEATHER DISPLAY SECTION -->
+  <section class="weather-info-container">
+    <div id="current-weather" class="weather-card">
+      <h2 id="city-name">--</h2>
+      <p id="date-time">--</p>
+      <img id="weather-icon" src="" alt="Weather Icon"/>
+      <h3 id="temperature">--</h3>
+      <p id="description">--</p>
+      <div class="weather-stats">
+        <p><strong>Humidity:</strong> <span id="humidity">--</span></p>
+        <p><strong>Wind:</strong> <span id="wind">--</span></p>
+        <p><strong>UV Index:</strong> <span id="uv-index">--</span></p>
+        <p><strong>Sunrise:</strong> <span id="sunrise">--</span></p>
+        <p><strong>Sunset:</strong> <span id="sunset">--</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 📅 10-DAY FORECAST -->
+  <section class="forecast-section">
+    <h2>10-Day Forecast</h2>
+    <div id="forecast-cards" class="forecast-cards">
+      <!-- Forecast cards will be dynamically added here -->
+    </div>
+  </section>
+
+  <!-- 🎵 AMBIENT BACKGROUND MUSIC -->
+  <audio src="music/default.mp3" autoplay loop id="background-music"></audio>
+
+  <!-- 📞 CONTACT FOOTER -->
+  <footer>
+    <video src="videos/contact.mp4" autoplay loop muted></video>
+    <p>Powered by OpenWeatherMap API</p>
+    <p>Contact: <a href="mailto:shreejithisdumb@gmail.com">shreejithisdumb@gmail.com</a> | Phone: 7904106363</p>
+  </footer>
+
+  <!-- 🔗 SCRIPTS -->
+  <script src="scripts/index.js"></script>
 </body>
 </html>
