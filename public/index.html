@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Neko Global Weather</title>
   <link rel="stylesheet" href="styles/global.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-
-  <!-- 🌤️ NAVIGATION BAR -->
+  <!-- 🌐 NAVBAR (Minimal but Modern) -->
   <nav class="navbar">
     <div class="logo">
       <video src="videos/logo.mp4" autoplay loop muted></video>
@@ -23,50 +23,142 @@
     </ul>
   </nav>
 
-  <!-- 🔍 SEARCH SECTION -->
-  <section class="search-section">
-    <input type="text" id="search-input" placeholder="Search City..." />
+  <!-- ⚠️ ALERT BANNER -->
+  <div id="weather-alert-banner" class="alert-banner">Loading alerts...</div>
+
+  <!-- 🌄 BACKGROUND IMAGE (Dynamic) -->
+  <div id="weather-background" class="weather-bg"></div>
+
+  <!-- 🔍 SEARCH + CAT VIDEO + LOCATION + VOICE -->
+  <section class="search-area">
+    <input type="text" id="search-input" placeholder="Enter city..." autocomplete="on" autocorrect="on" spellcheck="true" />
     <button id="search-button">Search</button>
-    <video src="videos/search.mp4" autoplay muted loop class="cat-animation"></video>
+    <button id="geo-button" title="Use My Location" onclick="getUserLocation()">
+      <i class="fas fa-location-crosshairs"></i> Use My Location
+    </button>
+    <button id="mic-button" title="Voice Search"><i class="fas fa-microphone"></i></button>
+    <video id="cat-video" autoplay muted loop class="cat-animation"></video>
+
+    <!-- 🔖 Quick City Tags -->
+    <div class="quick-cities">
+      <button class="city-tag">Chennai</button>
+      <button class="city-tag">Delhi</button>
+      <button class="city-tag">Mumbai</button>
+    </div>
   </section>
 
-  <!-- 🌇 WEATHER DISPLAY SECTION -->
-  <section class="weather-info-container">
-    <div id="current-weather" class="weather-card">
+  <!-- 🌇 CURRENT WEATHER DISPLAY -->
+  <section class="weather-main">
+    <div class="weather-now">
       <h2 id="city-name">--</h2>
       <p id="date-time">--</p>
-      <img id="weather-icon" src="" alt="Weather Icon"/>
-      <h3 id="temperature">--</h3>
-      <p id="description">--</p>
-      <div class="weather-stats">
-        <p><strong>Humidity:</strong> <span id="humidity">--</span></p>
-        <p><strong>Wind:</strong> <span id="wind">--</span></p>
-        <p><strong>UV Index:</strong> <span id="uv-index">--</span></p>
-        <p><strong>Sunrise:</strong> <span id="sunrise">--</span></p>
-        <p><strong>Sunset:</strong> <span id="sunset">--</span></p>
+      <img id="weather-icon" src="" alt="Weather Icon" />
+      <h1 id="weather-temperature">--</h1>
+      <p id="weather-description">--</p>
+      <div class="weather-details">
+        <p><i class="fas fa-water"></i> <strong>Humidity:</strong> <span id="humidity">--</span></p>
+        <p><i class="fas fa-wind"></i> <strong>Wind:</strong> <span id="wind-speed">--</span></p>
+        <p><i class="fas fa-sun"></i> <strong>UV Index:</strong> <span id="uv-index">--</span></p>
+        <p><i class="fas fa-arrow-up"></i> <strong>Sunrise:</strong> <span id="sunrise">--</span></p>
+        <p><i class="fas fa-arrow-down"></i> <strong>Sunset:</strong> <span id="sunset">--</span></p>
       </div>
     </div>
   </section>
 
-  <!-- 📅 10-DAY FORECAST -->
+  <!-- 📅 10-DAY FORECAST SECTION -->
+
+<!-- 🕒 HOURLY WEATHER TIMELINE SLIDER -->
+<section class="hourly-slider">
+  <h2>Hourly Forecast</h2>
+  <div id="hourly-forecast" class="hourly-scroll">
+    <!-- JS will inject hourly forecast cards here -->
+  </div>
+</section>
+
+<!-- 🌫️ AIR QUALITY INFO BOX -->
+<section class="air-quality-section">
+  <h2>Air Quality Index (AQI)</h2>
+  <div class="aqi-box">
+    <p><strong>AQI:</strong> <span id="aqi-value">--</span></p>
+    <p id="aqi-message">Health level: --</p>
+  </div>
+</section>
+
+<!-- 🧭 MINI WIND COMPASS -->
+<section class="wind-compass-section">
+  <h2>Wind Direction</h2>
+  <div class="wind-direction-box">
+    <i class="fas fa-location-arrow" id="wind-arrow" style="transform: rotate(0deg);"></i>
+    <p><span id="wind-degree">--</span>°</p>
+  </div>
+</section>
+
+<!-- 📆 UPCOMING WEATHER EVENTS -->
+<section class="weather-events-section">
+  <h2>Upcoming Weather Events</h2>
+  <ul class="event-list">
+    <li>🌧️ World Rain Day - July 29</li>
+    <li>🔥 High UV Alert - April 4</li>
+    <li>🌪️ National Cyclone Awareness Week - May 6</li>
+  </ul>
+</section>
   <section class="forecast-section">
     <h2>10-Day Forecast</h2>
-    <div id="forecast-cards" class="forecast-cards">
-      <!-- Forecast cards will be dynamically added here -->
+    <div id="forecast" class="forecast-grid">
+      <!-- JS will fill this with cards containing: date, icon, temp -->
     </div>
   </section>
 
-  <!-- 🎵 AMBIENT BACKGROUND MUSIC -->
-  <audio src="music/default.mp3" autoplay loop id="background-music"></audio>
+  <!-- 🌐 LANGUAGE & THEME OPTIONS -->
+  <section class="options-bar">
+    <label for="language-select">🌍 Language:</label>
+    <select id="language-select">
+      <option value="en">English</option>
+      <option value="hi">Hindi</option>
+      <option value="ta">Tamil</option>
+    </select>
 
-  <!-- 📞 CONTACT FOOTER -->
+    <label class="dark-toggle" title="Dark Mode">
+      <input type="checkbox" id="dark-mode-toggle" />
+      <span class="slider"></span>
+    </label>
+  </section>
+
+  <!-- 🎵 AMBIENT MUSIC PLAYER -->
+  <audio src="music/default.mp3" autoplay loop id="weather-music"></audio>
+
+  <!-- 📞 FOOTER -->
   <footer>
-    <video src="videos/contact.mp4" autoplay loop muted></video>
+    <video src="videos/contact.mp4" autoplay muted loop></video>
     <p>Powered by OpenWeatherMap API</p>
     <p>Contact: <a href="mailto:shreejithisdumb@gmail.com">shreejithisdumb@gmail.com</a> | Phone: 7904106363</p>
   </footer>
 
-  <!-- 🔗 SCRIPTS -->
-  <script src="scripts/index.js"></script>
+  <!-- 🧠 SCRIPT -->
+  <script>
+  function getUserLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          if (confirm("Use your current location to fetch weather?")) {
+            // Trigger weather fetch in your index.js (custom event or function call)
+            const event = new CustomEvent("fetch-weather-location", { detail: { lat, lon } });
+            window.dispatchEvent(event);
+          }
+        },
+        (error) => {
+          alert("Location access denied or unavailable.");
+          console.error("Geolocation error:", error);
+        }
+      );
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
+  }
+</script>
+<script src="scripts/index.js"></script>
 </body>
 </html>
+
