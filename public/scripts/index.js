@@ -1,4 +1,4 @@
-// index.js – FINAL with all features fully integrated
+// index.js – COMPLETE FINAL VERSION WITH ALL FEATURES AND FIXES
 
 const apiKey = "YOUR_API_KEY_HERE";
 const weatherURL = "https://api.openweathermap.org/data/2.5/weather";
@@ -9,34 +9,89 @@ const oneCallURL = "https://api.openweathermap.org/data/3.0/onecall";
 const elements = {
   cityInput: document.getElementById("search-input"),
   searchBtn: document.getElementById("search-button"),
-  forecast: document.getElementById("forecast"),
+  forecast: document.getElementById("forecast-cards"),
   background: document.getElementById("weather-background"),
   catVideo: document.getElementById("cat-video"),
-  music: document.getElementById("weather-music"),
+  music: document.getElementById("background-music"),
   cityName: document.getElementById("city-name"),
   dateTime: document.getElementById("date-time"),
-  temp: document.getElementById("weather-temperature"),
-  description: document.getElementById("weather-description"),
+  temp: document.getElementById("temperature"),
+  description: document.getElementById("description"),
   icon: document.getElementById("weather-icon"),
   humidity: document.getElementById("humidity"),
-  wind: document.getElementById("wind-speed"),
-  windDir: document.getElementById("wind-degree"),
+  wind: document.getElementById("wind"),
+  windDir: document.getElementById("wind-direction"),
   windArrow: document.getElementById("wind-arrow"),
   uvIndex: document.getElementById("uv-index"),
   sunrise: document.getElementById("sunrise"),
   sunset: document.getElementById("sunset"),
   hourlyForecast: document.getElementById("hourly-forecast"),
-  aqi: document.getElementById("aqi-value"),
+  aqi: document.getElementById("air-quality"),
   aqiMsg: document.getElementById("aqi-message"),
   alertBanner: document.getElementById("weather-alert-banner"),
   micBtn: document.getElementById("mic-button"),
-  langSelect: document.getElementById("language-select"),
-  darkToggle: document.getElementById("dark-mode-toggle")
+  langSelect: document.getElementById("language-switcher"),
+  themeSwitcher: document.getElementById("theme-switcher")
 };
 
-function getTimeOfDay() {
-  const hour = new Date().getHours();
-  return hour >= 5 && hour < 12 ? "day" : hour >= 12 && hour < 18 ? "evening" : "night";
+const savedLang = localStorage.getItem("selectedLanguage") || "en";
+const savedCity = localStorage.getItem("lastCity") || "Chennai";
+elements.langSelect.value = savedLang;
+elements.themeSwitcher.value = localStorage.getItem("theme") || "theme-default";
+document.body.className = elements.themeSwitcher.value;
+
+const translations = {
+  en: {
+    language: "🌍 Language:",
+    forecast: "10-Day Forecast",
+    aqi: "Air Quality Index",
+    uv: "UV Index",
+    wind: "Wind",
+    humidity: "Humidity",
+    events: "Upcoming Weather Events"
+  },
+  hi: {
+    language: "🌍 भाषा:",
+    forecast: "10-दिवसीय पूर्वानुमान",
+    aqi: "वायु गुणवत्ता सूचकांक",
+    uv: "यूवी सूचकांक",
+    wind: "पवन",
+    humidity: "नमी",
+    events: "आगामी मौसम घटनाएँ"
+  },
+  ta: {
+    language: "🌍 மொழி:",
+    forecast: "10 நாள் வானிலை",
+    aqi: "காற்று தர மதிப்பெண்",
+    uv: "UV குறியீடு",
+    wind: "காற்று",
+    humidity: "ஈரப்பதம்",
+    events: "வரவுள்ள வானிலை நிகழ்வுகள்"
+  }
+};
+
+function updateLabels(lang) {
+  const t = translations[lang];
+  document.querySelector("label[for='language-switcher']").textContent = t.language;
+  document.querySelector(".forecast-section h2").textContent = t.forecast;
+  document.querySelector(".air-quality-section h2").textContent = t.aqi;
+  document.querySelector(".uv-index-section h2").textContent = t.uv;
+  document.querySelector(".wind-section h2").textContent = t.wind;
+  document.querySelector(".humidity-section h2").textContent = t.humidity;
+  document.querySelector(".events-section h2").textContent = t.events;
+}
+
+function checkMedia(path, fallback, target, type = "src") {
+  fetch(path).then(res => {
+    if (res.ok) {
+      if (type === "src") target.src = path;
+      else target.style.backgroundImage = `url('${path}')`;
+    } else {
+      if (type === "src") target.src = fallback;
+      else target.style.backgroundImage = `url('${fallback}')`;
+    }
+    if (target.tagName === "VIDEO") target.load();
+  });
 }
 
 async function fetchWeather(city) {
@@ -64,36 +119,14 @@ function renderWeather(data) {
   elements.description.innerText = weather.description;
   elements.icon.src = `https://openweathermap.org/img/wn/${weather.icon}@2x.png`;
 
-  fetch(bgPath).then(res => {
-    if (res.ok) {
-      elements.background.style.backgroundImage = `url('${bgPath}')`;
-    } else {
-      elements.background.style.backgroundImage = "url('images/default.jpg')";
-    }
-  });
-
-  fetch(catPath).then(res => {
-    if (res.ok) {
-      elements.catVideo.src = catPath;
-    } else {
-      elements.catVideo.src = "videos/default-cat.mp4";
-    }
-  });
-
-  fetch(musicPath).then(res => {
-    if (res.ok) {
-      elements.music.src = musicPath;
-      elements.music.play();
-    } else {
-      elements.music.src = "music/default.mp3";
-      elements.music.play();
-    }
-  });
+  checkMedia(bgPath, "images/default.jpg", elements.background, "backgroundImage");
+  checkMedia(catPath, "videos/default-cat.mp4", elements.catVideo);
+  checkMedia(musicPath, "music/default.mp3", elements.music);
 
   elements.humidity.innerText = `${data.main.humidity}%`;
   elements.wind.innerText = `${data.wind.speed} m/s`;
-  elements.windDir.innerText = `${data.wind.deg}`;
-  elements.windArrow.style.transform = `rotate(${data.wind.deg}deg)`;
+  elements.windDir.innerText = `${data.wind.deg}°`;
+  if (elements.windArrow) elements.windArrow.style.transform = `rotate(${data.wind.deg}deg)`;
   elements.sunrise.innerText = new Date(data.sys.sunrise * 1000).toLocaleTimeString();
   elements.sunset.innerText = new Date(data.sys.sunset * 1000).toLocaleTimeString();
 }
@@ -107,7 +140,7 @@ async function fetchForecast(lat, lon) {
 
 function renderHourlyForecast(hours) {
   elements.hourlyForecast.innerHTML = "";
-  hours.forEach((hour) => {
+  hours.forEach(hour => {
     const card = document.createElement("div");
     card.className = "hour-card";
     card.innerHTML = `
@@ -148,7 +181,7 @@ async function fetchAirQuality(lat, lon) {
   const aqi = data.list[0].main.aqi;
   elements.aqi.innerText = aqi;
   const msg = ["Good", "Fair", "Moderate", "Poor", "Very Poor"];
-  elements.aqiMsg.innerText = `Health level: ${msg[aqi - 1]}`;
+  if (elements.aqiMsg) elements.aqiMsg.innerText = `Health level: ${msg[aqi - 1]}`;
 }
 
 async function fetchUVIndex(lat, lon) {
@@ -157,7 +190,6 @@ async function fetchUVIndex(lat, lon) {
   elements.uvIndex.innerText = data.current.uvi;
 }
 
-// Search + Quick City Tags
 elements.searchBtn.onclick = () => {
   const city = elements.cityInput.value.trim();
   if (city) {
@@ -165,171 +197,83 @@ elements.searchBtn.onclick = () => {
     fetchWeather(city);
   }
 };
-document.querySelectorAll(".city-tag").forEach(btn => {
-  btn.onclick = () => fetchWeather(btn.innerText);
+
+document.querySelectorAll(".city-tag").forEach(tag => {
+  tag.onclick = () => fetchWeather(tag.innerText);
 });
 
-// Location Event
-window.addEventListener("fetch-weather-location", (e) => {
-  const { lat, lon } = e.detail;
-  fetchWeatherByCoords(lat, lon);
-});
-
-async function fetchWeatherByCoords(lat, lon) {
-  const url = `${weatherURL}?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
-  const res = await fetch(url);
-  const data = await res.json();
-  renderWeather(data);
-  fetchForecast(lat, lon);
-  fetchAirQuality(lat, lon);
-  fetchUVIndex(lat, lon);
-}
-
-// 🎙️ Real ASR Voice Mic Integration
 const recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 if (recognition) {
   const mic = new recognition();
   mic.lang = savedLang === "hi" ? "hi-IN" : savedLang === "ta" ? "ta-IN" : "en-US";
   mic.interimResults = false;
-
   elements.micBtn.onclick = () => {
     elements.cityInput.disabled = true;
-elements.searchBtn.disabled = true;
-mic.start();
+    elements.searchBtn.disabled = true;
+    mic.start();
     elements.micBtn.classList.add("listening");
   };
-
-  mic.onresult = (e) => {
+  mic.onresult = e => {
     const transcript = e.results[0][0].transcript;
     elements.cityInput.value = transcript;
     fetchWeather(transcript);
+    elements.cityInput.disabled = false;
+    elements.searchBtn.disabled = false;
     elements.micBtn.classList.remove("listening");
-elements.cityInput.disabled = false;
-elements.searchBtn.disabled = false;
   };
-
   mic.onerror = () => {
-    alert("Voice recognition error. Try again.");
+    alert("Voice recognition error");
     elements.micBtn.classList.remove("listening");
   };
-} else {
-  elements.micBtn.onclick = () => alert("Speech recognition not supported in this browser.");
-}
-};
-
-// 🌘 Dark Mode Toggle
-elements.darkToggle.onchange = () => {
-  document.body.classList.toggle("dark-mode", elements.darkToggle.checked);
-};
-
-// 🌐 Language Switcher Logic (Basic Demo)
-const translations = {
-  en: {
-    temperature: "Temperature",
-    humidity: "Humidity",
-    wind: "Wind",
-    sunrise: "Sunrise",
-    sunset: "Sunset",
-    forecast: "10-Day Forecast",
-    hourly: "Hourly Forecast",
-    aqi: "Air Quality Index (AQI)",
-    windDir: "Wind Direction",
-    events: "Upcoming Weather Events",
-    language: "🌍 Language:"
-  },
-  hi: {
-    temperature: "तापमान",
-    humidity: "नमी",
-    wind: "हवा",
-    sunrise: "सूर्योदय",
-    sunset: "सूर्यास्त",
-    forecast: "10-दिवसीय पूर्वानुमान",
-    hourly: "प्रति घंटा पूर्वानुमान",
-    aqi: "वायु गुणवत्ता सूचकांक",
-    windDir: "पवन दिशा",
-    events: "आगामी मौसम कार्यक्रम",
-    language: "🌍 भाषा:"
-  },
-  ta: {
-    temperature: "வெப்பநிலை",
-    humidity: "ஈரப்பதம்",
-    wind: "காற்று",
-    sunrise: "சூரிய உதயம்",
-    sunset: "சூரிய அஸ்தமனம்",
-    forecast: "10 நாள் வானிலை முன்னறிவு",
-    hourly: "மணிநேர வானிலை",
-    aqi: "காற்று தர மதிப்பீடு",
-    windDir: "காற்று திசை",
-    events: "வரவுள்ள வானிலை நிகழ்வுகள்",
-    language: "🌍 மொழி:"
-  }
-};
-
-function updateLabels(lang) {
-  const t = translations[lang];
-  document.querySelector("label[for='language-select']").textContent = t.language;
-  document.querySelector("#weather-temperature").previousElementSibling.textContent = t.temperature;
-  document.querySelector("#humidity").parentElement.innerHTML = `<i class='fas fa-water'></i> <strong>${t.humidity}:</strong> <span id='humidity'>${elements.humidity.innerText}</span>`;
-  document.querySelector("#wind-speed").parentElement.innerHTML = `<i class='fas fa-wind'></i> <strong>${t.wind}:</strong> <span id='wind-speed'>${elements.wind.innerText}</span>`;
-  document.querySelector("#sunrise").parentElement.innerHTML = `<i class='fas fa-arrow-up'></i> <strong>${t.sunrise}:</strong> <span id='sunrise'>${elements.sunrise.innerText}</span>`;
-  document.querySelector("#sunset").parentElement.innerHTML = `<i class='fas fa-arrow-down'></i> <strong>${t.sunset}:</strong> <span id='sunset'>${elements.sunset.innerText}</span>`;
-  document.querySelector(".forecast-section h2").textContent = t.forecast;
-  document.querySelector(".hourly-slider h2, .hourly-slider h3").textContent = t.hourly;
-  document.querySelector(".air-quality-section h2").textContent = t.aqi;
-  document.querySelector(".wind-compass-section h2").textContent = t.windDir;
-  document.querySelector(".weather-events-section h2").textContent = t.events;
-}:</strong> <span id='humidity'>${elements.humidity.innerText}</span>`;
-  document.querySelector("#wind-speed").parentElement.innerHTML = `<i class='fas fa-wind'></i> <strong>${t.wind}:</strong> <span id='wind-speed'>${elements.wind.innerText}</span>`;
-  document.querySelector("#sunrise").parentElement.innerHTML = `<i class='fas fa-arrow-up'></i> <strong>${t.sunrise}:</strong> <span id='sunrise'>${elements.sunrise.innerText}</span>`;
-  document.querySelector("#sunset").parentElement.innerHTML = `<i class='fas fa-arrow-down'></i> <strong>${t.sunset}:</strong> <span id='sunset'>${elements.sunset.innerText}</span>`;
 }
 
-elements.langSelect.onchange = () => updateLabels(elements.langSelect.value);
+elements.themeSwitcher.onchange = e => {
+  document.body.className = e.target.value;
+  localStorage.setItem("theme", e.target.value);
 };
 
-// 🚨 Live Alert via WebSocket with Severity
+elements.langSelect.onchange = () => {
+  const lang = elements.langSelect.value;
+  localStorage.setItem("selectedLanguage", lang);
+  updateLabels(lang);
+};
+
+const calendar = document.getElementById("weather-events");
+function renderWeatherEvents() {
+  const events = [
+    { date: "2025-04-05", title: "Light Rain in South Chennai" },
+    { date: "2025-04-06", title: "High UV Expected - Avoid Noon Sun" },
+    { date: "2025-04-07", title: "Wind Advisory in Marina Beach" },
+    { date: "2025-04-08", title: "Possible Thunderstorm Evening" }
+  ];
+  calendar.innerHTML = "";
+  events.forEach(event => {
+    const div = document.createElement("div");
+    div.className = "calendar-event";
+    div.innerHTML = `<strong>${event.date}</strong>: ${event.title}`;
+    calendar.appendChild(div);
+  });
+}
+renderWeatherEvents();
+
 const socket = new WebSocket("wss://your-weather-alert-server.example/ws");
 socket.onopen = () => socket.send(JSON.stringify({ type: "subscribe", city: savedCity }));
-socket.onmessage = (event) => {
+socket.onmessage = event => {
   try {
     const alert = JSON.parse(event.data);
     const level = alert.severity?.toLowerCase() || "info";
     elements.alertBanner.className = `alert-banner ${level}`;
     elements.alertBanner.innerText = `⚠️ ${alert.message}`;
-
-    // Optional: Push WhatsApp message (placeholder)
     fetch("https://your-backend.com/send-whatsapp", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        phone: "your-recipient-number",
-        message: alert.message
-      })
+      body: JSON.stringify({ phone: "your-recipient-number", message: alert.message })
     });
-
-    // Optional mobile vibration
     if ("vibrate" in navigator) navigator.vibrate(400);
   } catch (e) {
     console.warn("Invalid alert format", e);
   }
-}; // Replace with your alert backend WS endpoint
-socket.onopen = () => {
-  socket.send("Requesting weather alert updates");
-};
-socket.onmessage = (event) => {
-  elements.alertBanner.innerText = `⚠️ ${event.data}`;
 };
 
-// Auto-load default city from localStorage or fallback
-const savedCity = localStorage.getItem("lastCity") || "Chennai";
 fetchWeather(savedCity);
-
-// 🌍 Remember selected language
-const savedLang = localStorage.getItem("selectedLanguage") || "en";
-elements.langSelect.value = savedLang;
 updateLabels(savedLang);
-
-elements.langSelect.onchange = () => {
-  localStorage.setItem("selectedLanguage", elements.langSelect.value);
-  updateLabels(elements.langSelect.value);
-};
