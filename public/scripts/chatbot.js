@@ -110,6 +110,63 @@ exportBtn.addEventListener("click", () => {
   link.click();
 });
 
+// 🌦️ Scenario Advice Fetch Logic
+const scenarioForm = document.getElementById("scenario-form");
+const weatherInput = document.getElementById("scenario-weather");
+const industryInput = document.getElementById("scenario-industry");
+const severityInput = document.getElementById("scenario-severity");
+const categoryInput = document.getElementById("scenario-category");
+const resultsContainer = document.getElementById("scenario-results");
+
+scenarioForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const weatherType = weatherInput.value.trim();
+  const industry = industryInput.value.trim();
+  const severity = severityInput.value.trim();
+  const category = categoryInput.value.trim();
+
+  if (!weatherType) {
+    alert("Please enter a weather type.");
+    return;
+  }
+
+  try {
+    const response = await fetch("/api/scenario-advice", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+      body: JSON.stringify({ weatherType, industry, severity, category }),
+    });
+
+    const data = await response.json();
+
+    resultsContainer.innerHTML = "";
+
+    if (data.results && data.results.length > 0) {
+      data.results.forEach((item, index) => {
+        const card = document.createElement("div");
+        card.className = "advice-card";
+        card.innerHTML = `
+          <h3>🌐 ${item.industry} - ${item.weatherType}</h3>
+          <p><strong>Scenario:</strong> ${item.scenario}</p>
+          <p><strong>Advice:</strong> ${item.advice}</p>
+          <p><strong>Severity:</strong> ${item.severity} | <strong>Urgency:</strong> ${item.responseUrgency}</p>
+          <p><strong>Region:</strong> ${item.regionType} | <strong>Sensitive:</strong> ${item.sensitiveGroups}</p>
+        `;
+        resultsContainer.appendChild(card);
+      });
+    } else {
+      resultsContainer.innerHTML = `<p class="no-results">❌ No matching scenario advice found.</p>`;
+    }
+  } catch (err) {
+    console.error("Scenario fetch error:", err);
+    resultsContainer.innerHTML = `<p class="error-msg">⚠️ Failed to fetch advice. Try again.</p>`;
+  }
+});
+
+
 // Voice input (ASR)
 micBtn.addEventListener("click", async () => {
   try {
