@@ -1,19 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- ...existing code... -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Neko Chatbot</title>
+  <link rel="stylesheet" href="styles/chatbot.css" />
 </head>
 <body>
-    <div id="chatbot-container">
-        <h1>Chat with our AI Bot</h1>
-        <input type="text" id="chatbot-input" placeholder="Ask me anything...">
-        <button id="send-message-btn">Send</button>
-        <button id="clear-chatbot-btn">Clear</button> <!-- New button to clear input and response -->
+  <div class="chatbot-container">
 
-        <div id="chatbot-response-container">
-            <p id="chatbot-response">Chatbot response will appear here...</p>
+    <!-- 📜 Sidebar (only shown if user is logged in) -->
+    <aside class="chat-sidebar">
+      <h2>📜 Chat History</h2>
+      <ul id="chat-history"></ul>
+    </aside>
+
+    <!-- 💬 Main Chat Interface -->
+    <main class="chat-main">
+
+      <!-- 🧠 AI Header -->
+      <header class="chat-header">
+        <h1>Hi, I’m <span class="highlight">Neko</span> – your Weather AI</h1>
+        <div class="chat-controls">
+          <button id="mute-toggle" title="Toggle voice">🔊 Mute</button>
+          <button id="export-chat" title="Download chat">💾 Export</button>
         </div>
-    </div>
-    <!-- ...existing code... -->
+      </header>
+
+      <!-- 🔗 Navigation Bar -->
+      <nav class="chat-nav">
+        <a href="index.html">🏠 Home</a>
+        <a href="dashboard.html">📊 Dashboard</a>
+        <a href="weatherMap.html">🗺️ Weather Map</a>
+        <a href="business.html">🏭 Industry</a>
+        <a href="weatherAdvisor.html">🧭 Advisor</a>
+      </nav>
+
+      <!-- 💬 Chat Display Area -->
+      <section id="chat-window" class="chat-window" aria-live="polite">
+        <!-- Chat messages will be inserted here -->
+      </section>
+
+      <!-- 🧾 Input Form -->
+      <form id="chat-form" class="chat-form">
+        <textarea id="chat-input" placeholder="Type your message..." rows="1" required></textarea>
+        <button type="submit" id="send-btn" title="Send">📤 Send</button>
+        <button type="button" id="mic-btn" title="Speak">🎤</button>
+        <button type="button" id="clear-chat" title="Clear chat">🧹</button>
+      </form>
+
+    </main>
+  </div>
+
+  <script src="scripts/chatbot.js"></script>
 </body>
 </html>
+
