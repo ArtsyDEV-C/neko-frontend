@@ -13,6 +13,10 @@
     <aside class="chat-sidebar">
       <h2>📜 Chat History</h2>
       <ul id="chat-history"></ul>
+      <!-- Guest message (will be shown if the user is not logged in) -->
+      <div id="guest-message" style="display:none;">
+        <p>Please log in to access chat history and export functionality.</p>
+      </div>
     </aside>
 
     <!-- 💬 Main Chat Interface -->
@@ -23,7 +27,7 @@
         <h1>Hi, I’m <span class="highlight">Neko</span> – your Weather AI</h1>
         <div class="chat-controls">
           <button id="mute-toggle" title="Toggle voice">🔊 Mute</button>
-          <button id="export-chat" title="Download chat">💾 Export</button>
+          <button id="export-chat" title="Download chat" disabled>💾 Export</button>
         </div>
       </header>
 
@@ -39,6 +43,7 @@
       <!-- 💬 Chat Display Area -->
       <section id="chat-window" class="chat-window" aria-live="polite">
         <!-- Chat messages will be inserted here -->
+        <div id="loading-indicator" style="display:none;">Neko is typing...</div>
       </section>
 
       <!-- 🧾 Input Form -->
@@ -55,4 +60,3 @@
   <script src="scripts/chatbot.js"></script>
 </body>
 </html>
-
