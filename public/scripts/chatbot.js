@@ -11,22 +11,28 @@ const exportBtn = document.getElementById("export-chat");
 const micBtn = document.getElementById("mic-btn");
 const clearBtn = document.getElementById("clear-chat");
 const chatHistorySidebar = document.querySelector(".chat-sidebar");
-const chatHistoryList = document.getElementById("chat-history");
+const guestMessage = document.getElementById("guest-message");
+const loadingIndicator = document.getElementById("loading-indicator");
 
-// Guest mode UI
+// Guest Mode UI (hide chat history and export for guests)
 if (!token) {
   chatHistorySidebar.style.display = "none";
   exportBtn.disabled = true;
+  guestMessage.style.display = "block"; // Show guest message
 }
 
-// Load history if logged in
+// Load chat history if logged in
 window.addEventListener("load", async () => {
   if (token) {
-    const res = await fetch("/api/chatbot/history", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const history = await res.json();
-    history.forEach((item) => renderMessage(item.role, item.message, item.timestamp));
+    try {
+      const res = await fetch("/api/chatbot/history", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const history = await res.json();
+      history.forEach((item) => renderMessage(item.role, item.message, item.timestamp));
+    } catch (error) {
+      console.error("Failed to load chat history:", error);
+    }
   }
 });
 
@@ -39,21 +45,30 @@ chatForm.addEventListener("submit", async (e) => {
   renderMessage("user", message);
   chatInput.value = "";
 
-  const res = await fetch("/api/chatbot", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({ message }),
-  });
+  loadingIndicator.style.display = "block"; // Show loading indicator
 
-  const data = await res.json();
-  renderMessage("bot", data.reply);
+  try {
+    const res = await fetch("/api/chatbot", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ message }),
+    });
 
-  if (!isMuted && window.speechSynthesis) {
-    const speech = new SpeechSynthesisUtterance(data.reply);
-    speechSynthesis.speak(speech);
+    const data = await res.json();
+    renderMessage("bot", data.reply);
+
+    if (!isMuted && window.speechSynthesis) {
+      const speech = new SpeechSynthesisUtterance(data.reply);
+      speechSynthesis.speak(speech);
+    }
+  } catch (error) {
+    console.error("Chatbot error:", error.message);
+    renderMessage("bot", "Sorry, I couldn't process that. Please try again.");
+  } finally {
+    loadingIndicator.style.display = "none"; // Hide loading indicator
   }
 });
 
@@ -77,7 +92,10 @@ muteToggle.addEventListener("click", () => {
 
 // Clear chat
 clearBtn.addEventListener("click", () => {
-  if (confirm("Clear this chat?")) chatWindow.innerHTML = "";
+  const userConfirmed = window.confirm("Are you sure you want to clear the chat?");
+  if (userConfirmed) {
+    chatWindow.innerHTML = "";
+  }
 });
 
 // Export chat
@@ -94,30 +112,38 @@ exportBtn.addEventListener("click", () => {
 
 // Voice input (ASR)
 micBtn.addEventListener("click", async () => {
-  const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-  const mediaRecorder = new MediaRecorder(stream);
-  const audioChunks = [];
+  try {
+    // Check for microphone permissions
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const mediaRecorder = new MediaRecorder(stream);
+    const audioChunks = [];
 
-  mediaRecorder.ondataavailable = (e) => audioChunks.push(e.data);
-  mediaRecorder.onstop = async () => {
-    const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
-    const formData = new FormData();
-    formData.append("audio", audioBlob, "speech.wav");
+    mediaRecorder.ondataavailable = (e) => audioChunks.push(e.data);
+    mediaRecorder.onstop = async () => {
+      const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+      const formData = new FormData();
+      formData.append("audio", audioBlob, "speech.wav");
 
-    const res = await fetch("/api/voice/transcribe", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${token}` },
-      body: formData,
-    });
+      const res = await fetch("/api/voice/transcribe", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
+      });
 
-    const data = await res.json();
-    chatInput.value = data.text;
-  };
+      const data = await res.json();
+      chatInput.value = data.text; // Set transcribed text to chat input
+    };
 
-  mediaRecorder.start();
-  micBtn.textContent = "🔴 Recording... Click to stop";
-  micBtn.onclick = () => {
-    mediaRecorder.stop();
-    micBtn.textContent = "🎤";
-  };
+    mediaRecorder.start();
+    micBtn.textContent = "🔴 Recording... Click to stop";
+    micBtn.disabled = true; // Disable mic button during recording
+
+    micBtn.onclick = () => {
+      mediaRecorder.stop();
+      micBtn.textContent = "🎤"; // Reset mic button text after stopping
+      micBtn.disabled = false; // Re-enable button after recording
+    };
+  } catch (error) {
+    alert("Microphone access denied. Please enable it to use voice input.");
+  }
 });
