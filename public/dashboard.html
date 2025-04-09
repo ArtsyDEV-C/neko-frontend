@@ -1,53 +1,49 @@
+<!-- public/dashboard.html -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Dashboard</title>
-    <link rel="stylesheet" href="styles/global.css">
-    <link rel="stylesheet" href="styles/dashboard.css"> <!-- Link to dashboard-specific styles -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neko Global Weather Dashboard</title>
+
+  <!-- ✅ Favicon (optional) -->
+  <link rel="icon" href="/assets/logo.png" type="image/png" />
+
+  <!-- ✅ Basic Theme Styling -->
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    #root {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Optional: loading placeholder */
+    .loading-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-size: 1.2rem;
+      color: #ccc;
+    }
+  </style>
 </head>
 <body>
-    <div id="dashboard-container">
-        <header>
-            <h1>Welcome to Your Dashboard</h1>
-            <button id="logout-btn">Logout</button>
-        </header>
+  <!-- ✅ Root React Mount Point -->
+  <div id="root">
+    <div class="loading-screen">Loading dashboard...</div>
+  </div>
 
-        <!-- Loading Indicator -->
-        <div id="loading-indicator" style="display: none;">Loading...</div>
-
-        <!-- User Information Section -->
-        <div id="user-info">
-            <h2>User Information</h2>
-            <p><strong>Name:</strong> <span id="user-name">Loading...</span></p>
-            <p><strong>Email:</strong> <span id="user-email">Loading...</span></p>
-        </div>
-
-        <!-- Weather Information Section -->
-        <div id="weather-info">
-            <h2>Your Weather Data</h2>
-            <p><strong>City:</strong> <span id="weather-city">Loading...</span></p>
-            <p><strong>Temperature:</strong> <span id="weather-temp">Loading...</span>°<span id="weather-unit">C</span></p>
-            <p><strong>Weather Description:</strong> <span id="weather-desc">Loading...</span></p>
-        </div>
-
-        <!-- Alerts Section -->
-        <div id="alerts-info">
-            <h2>Your Weather Alerts</h2>
-            <ul id="alerts-list">
-                <!-- Alerts will be dynamically added here -->
-            </ul>
-        </div>
-
-        <!-- Preferences Section -->
-        <div id="preferences-info">
-            <h2>Your Preferences</h2>
-            <p><strong>Preferred Unit:</strong> <span id="preferred-unit">Loading...</span></p>
-        </div>
-
-    </div>
-
-    <script src="scripts/dashboard.js"></script> <!-- Link to dashboard-specific JavaScript -->
+  <!-- ✅ Load your React app -->
+  <script type="module" src="/src/main.jsx"></script>
 </body>
 </html>
