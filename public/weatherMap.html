@@ -1,38 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather Map</title>
-    <link rel="stylesheet" href="styles/global.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <meta charset="UTF-8" />
+  <title>Neko Weather Map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="styles/weatherMap.css" />
 </head>
 <body>
-    <div id="weather-map-container">
-        <h1>Interactive Weather Map</h1>
-        <div id="weather-map" style="height: 500px;"></div>
-        <div id="map-controls">
-            <input type="text" id="location-input" placeholder="Enter location">
-            <button id="search-location-btn">Search</button>
-        </div>
-    </div>
-    
-    <div id="weather-info">
-        <h2 id="city-name"></h2>
-        <p id="temp"></p>
-        <p id="weather-desc"></p>
-    </div>
+  <div class="map-page-container">
+    <!-- 🌐 Map Controls -->
+    <aside class="map-controls">
+      <h2>🌦️ Weather Map Tools</h2>
 
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
-    <script>
-      const socket = io("https://your-backend.up.railway.app");
-      socket.on("weather-alert", (data) => {
-        alert(data.msg);
-      });
-    </script>
-    <script src="scripts/weatherMap.js"></script>
-    <script src="scripts/traffic.js"></script>
-    <script src="scripts/socketClient.js"></script>
+      <!-- City Weather Search -->
+      <div class="tool-group">
+        <input type="text" id="city-search" placeholder="Search city weather..." />
+        <button id="search-btn">🔍 Search</button>
+      </div>
+
+      <!-- Geocode Search -->
+      <div class="tool-group">
+        <input type="text" id="location-input" placeholder="Enter location..." />
+        <button id="search-location-btn">📍 Locate</button>
+      </div>
+
+      <!-- Weather Overlay Buttons -->
+      <div class="tool-group">
+        <h3>Overlay Layers</h3>
+        <button class="layer-toggle" data-layer="temp">🌡️ Temperature</button>
+        <button class="layer-toggle" data-layer="clouds">☁️ Clouds</button>
+        <button class="layer-toggle" data-layer="wind">💨 Wind</button>
+        <button class="layer-toggle" data-layer="rain">🌧️ Rain</button>
+      </div>
+
+      <!-- Route Planner -->
+      <div class="tool-group">
+        <h3>🛣️ Route Planner</h3>
+        <input type="text" id="from-location" placeholder="From..." />
+        <input type="text" id="to-location" placeholder="To..." />
+        <button id="route-btn">🚗 Show Route</button>
+        <button id="clear-route-btn">❌ Clear Route</button>
+      </div>
+
+      <!-- Live Traffic Toggle -->
+      <div class="tool-group">
+        <h3>🚦 Live Traffic</h3>
+        <button id="traffic-toggle-btn">🚗 Show Traffic</button>
+      </div>
+
+      <!-- Location + Export -->
+      <div class="tool-group">
+        <button id="geolocate-btn">📍 My Location</button>
+        <button id="export-weather-btn">📤 Export Weather</button>
+      </div>
+
+    </aside>
+
+    <!-- 🗺️ Main Map Display -->
+    <main class="map-display">
+      <div id="weather-map"></div>
+
+      <!-- 🧾 Weather Data Display -->
+      <section class="weather-info-card">
+        <h3>🌤️ Weather Info</h3>
+        <p><strong>City:</strong> <span id="city-name">-</span></p>
+        <p><strong>Temperature:</strong> <span id="temp">-</span></p>
+        <p><strong>Description:</strong> <span id="weather-desc">-</span></p>
+      </section>
+
+      <!-- 📏 Route Summary -->
+      <section id="route-summary" style="display: none;">
+        <h3>🧭 Route Info</h3>
+        <p><strong>Distance:</strong> <span id="route-distance">-</span></p>
+        <p><strong>Estimated Time:</strong> <span id="route-duration">-</span></p>
+      </section>
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="scripts/weatherMap.js"></script>
 </body>
 </html>
