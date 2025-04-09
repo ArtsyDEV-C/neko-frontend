@@ -1,16 +1,37 @@
-// weatherMap.js - Handle map rendering and weather data fetching
-
 const map = L.map('weather-map').setView([12.9716, 77.5946], 10); // Default to Bangalore
 
-// Set up the map tile layer
+// Base Layer
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: 'Map data © OpenStreetMap contributors'
+    attribution: '© OpenStreetMap contributors'
 }).addTo(map);
 
-// Add a sample marker
-L.marker([12.9716, 77.5946]).addTo(map).bindPopup("You're here!").openPopup();
+// Initial marker
+let activeMarker = L.marker([12.9716, 77.5946]).addTo(map).bindPopup("You're here!").openPopup();
 
-// Function to fetch weather data from the backend for a specific lat, lon
+// Weather Overlay Layers (OpenWeatherMap)
+const OPENWEATHER_API_KEY = '2149cbc5da7384b8ef7bcccf62b0bf68';
+const weatherLayers = {
+    temp: L.tileLayer(`https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=${OPENWEATHER_API_KEY}`, { opacity: 0.6 }),
+    clouds: L.tileLayer(`https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=${OPENWEATHER_API_KEY}`, { opacity: 0.6 }),
+    wind: L.tileLayer(`https://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=${OPENWEATHER_API_KEY}`, { opacity: 0.6 }),
+    rain: L.tileLayer(`https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=${OPENWEATHER_API_KEY}`, { opacity: 0.6 }),
+};
+let currentOverlay = null;
+
+// Toggle weather overlay layers
+document.querySelectorAll(".layer-toggle").forEach((btn) => {
+    btn.addEventListener("click", () => {
+        const type = btn.dataset.layer;
+
+        if (currentOverlay) map.removeLayer(currentOverlay);
+        if (weatherLayers[type]) {
+            currentOverlay = weatherLayers[type];
+            currentOverlay.addTo(map);
+        }
+    });
+});
+
+// Weather data from backend by coordinates
 async function fetchWeather(lat, lon) {
     const response = await fetch(`https://your-backend.up.railway.app/api/weather?lat=${lat}&lon=${lon}`);
     const data = await response.json();
@@ -19,53 +40,47 @@ async function fetchWeather(lat, lon) {
         const temp = data.main.temp;
         const description = data.weather[0].description;
 
-        // Display weather data on the map
+        // Update panel
         document.getElementById('city-name').innerText = data.name;
         document.getElementById('temp').innerText = `${temp}°C`;
         document.getElementById('weather-desc').innerText = description;
 
-        // Add a marker for the clicked location
-        L.marker([lat, lon]).addTo(map)
+        // Add or update marker
+        if (activeMarker) map.removeLayer(activeMarker);
+        activeMarker = L.marker([lat, lon]).addTo(map)
             .bindPopup(`<b>${data.name}</b><br>${description}<br>${temp}°C`)
             .openPopup();
     } else {
-        alert('Weather data not available for this location');
+        alert('Weather data not available.');
     }
 }
 
-// Handle map click event to fetch weather data for clicked location
-map.on('click', function (e) {
-    const lat = e.latlng.lat;
-    const lon = e.latlng.lng;
-    fetchWeather(lat, lon);
+// Handle click on map
+map.on('click', (e) => {
+    const { lat, lng } = e.latlng;
+    fetchWeather(lat, lng);
 });
 
-// Search functionality
-document.getElementById('search-btn').addEventListener('click', function() {
+// City-based weather search via OpenWeatherMap
+document.getElementById('search-btn').addEventListener('click', async () => {
     const city = document.getElementById('city-search').value;
-    fetchCityWeather(city);
-});
+    if (!city) return;
 
-// Fetch weather by city name
-async function fetchCityWeather(city) {
-    const weatherAPIKey = 'YOUR_OPENWEATHERMAP_API_KEY'; // Replace with your OpenWeatherMap API key
-    const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${weatherAPIKey}&units=metric`;
-
+    const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${OPENWEATHER_API_KEY}&units=metric`;
     const response = await fetch(weatherUrl);
     const data = await response.json();
 
     if (data.cod === 200) {
-        // Update map view to the searched city
         const lat = data.coord.lat;
         const lon = data.coord.lon;
         map.setView([lat, lon], 13);
         fetchWeather(lat, lon);
     } else {
-        alert('City not found!');
+        alert('City not found.');
     }
-}
+});
 
-// Add location search with geocoding
+// Location-based search using Nominatim (Geocoding)
 document.getElementById('search-location-btn').addEventListener('click', async () => {
     const location = document.getElementById('location-input').value;
     if (!location) return;
@@ -76,9 +91,11 @@ document.getElementById('search-location-btn').addEventListener('click', async (
     if (geoData.length > 0) {
         const { lat, lon } = geoData[0];
         map.setView([lat, lon], 10);
-        L.marker([lat, lon]).addTo(map).bindPopup(location).openPopup();
-        fetchWeather(lat, lon); // call your existing weather fetcher
+        if (activeMarker) map.removeLayer(activeMarker);
+        activeMarker = L.marker([lat, lon]).addTo(map).bindPopup(location).openPopup();
+        fetchWeather(lat, lon);
     } else {
         alert("Location not found!");
     }
 });
+
