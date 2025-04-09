@@ -1,0 +1,71 @@
+/* FavoritesPanel.css */
+
+.favorites-panel {
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    margin: 1rem 0;
+  }
+  
+  .favorites-panel h3 {
+    font-size: 1.4rem;
+    margin-bottom: 0.8rem;
+    text-align: center;
+  }
+  
+  .favorite-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .favorite-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    margin-bottom: 0.6rem;
+    background-color: #ffffff;
+    border-radius: 10px;
+    cursor: grab;
+    transition: background 0.2s ease;
+  }
+  
+  .favorite-item:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .favorite-item:active {
+    cursor: grabbing;
+  }
+  
+  .favorite-actions button {
+    margin-left: 0.5rem;
+    padding: 0.4rem 0.6rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    background-color: #e0e0e0;
+    transition: background-color 0.2s ease;
+    font-size: 0.9rem;
+  }
+  
+  .favorite-actions button:hover {
+    background-color: #d0d0d0;
+  }
+  
+  .weather-preview {
+    font-size: 0.95rem;
+    margin-top: 0.2rem;
+    color: #555;
+  }
+  
+  .remove-btn {
+    color: red;
+    background: transparent;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  
