@@ -116,12 +116,32 @@ document.getElementById('route-btn').addEventListener('click', async () => {
   const to = document.getElementById('to-location').value;
   if (!from || !to) return alert("Please enter both locations.");
 
-  const fromCoords = await geocode(from);
+  // 🛣️ Route segments for styled visualization
+const segments = data.features[0].geometry.coordinates;
+const warnings = data.features[0].properties.segments[0].steps;
+
+if (routeLayer) map.removeLayer(routeLayer);
+if (routeMarkers.length > 0) routeMarkers.forEach(m => map.removeLayer(m));
+
+// Color based on traffic warnings (simplified)
+let styledCoords = [];
+segments.forEach((coord, i) => {
+  const latLng = [coord[1], coord[0]];
+  styledCoords.push(latLng);
+});
+
+routeLayer = L.polyline(styledCoords, {
+  color: 'orange', // Replace with dynamic color logic if needed
+  weight: 5
+}).addTo(map);
+map.fitBounds(routeLayer.getBounds());
+
   const toCoords = await geocode(to);
 
   if (!fromCoords || !toCoords) return alert("Could not find one or both locations.");
 
   const body = { coordinates: [[fromCoords.lon, fromCoords.lat], [toCoords.lon, toCoords.lat]] };
+
   const res = await fetch("https://api.openrouteservice.org/v2/directions/driving-car", {
     method: "POST",
     headers: {
@@ -130,6 +150,36 @@ document.getElementById('route-btn').addEventListener('click', async () => {
     },
     body: JSON.stringify(body)
   });
+
+  const data = await res.json();
+  const coords = data.features[0].geometry.coordinates.map(c => [c[1], c[0]]);
+ const trafficSteps = data.features[0].properties.segments[0].steps;
+const issues = trafficSteps
+  .filter(step => step.road_class === "motorway" || step.road_class === "primary")
+  .map(step => step.instruction);
+
+if (issues.length > 0) {
+  alert("🚧 Traffic Alert:\n" + issues.slice(0, 5).join('\n'));
+}
+
+
+  // Draw route
+  if (routeLayer) map.removeLayer(routeLayer);
+  routeLayer = L.polyline(coords, { color: 'blue', weight: 5 }).addTo(map);
+  map.fitBounds(routeLayer.getBounds());
+
+  // Markers
+  routeMarkers.forEach(m => map.removeLayer(m));
+  routeMarkers = [
+    L.marker([fromCoords.lat, fromCoords.lon]).addTo(map).bindPopup("Start"),
+    L.marker([toCoords.lat, toCoords.lon]).addTo(map).bindPopup("End")
+  ];
+
+  // Show route summary
+  document.getElementById("route-summary").style.display = "block";
+  document.getElementById("route-distance").innerText = `${(summary.distance / 1000).toFixed(1)} km`;
+  document.getElementById("route-duration").innerText = `${Math.round(summary.duration / 60)} mins`;
+});
 
   const data = await res.json();
   const coords = data.features[0].geometry.coordinates.map(c => [c[1], c[0]]); // flip for Leaflet
