@@ -142,9 +142,9 @@ function renderWeather(data) {
   elements.description.innerText = weather.description;
   elements.icon.src = `https://openweathermap.org/img/wn/${weather.icon}@2x.png`;
 
-  checkMedia(bgPath, "images/default.jpg", elements.background, "backgroundImage");
-  checkMedia(catPath, "videos/default-cat.mp4", elements.catVideo);
-  checkMedia(musicPath, "music/default.mp3", elements.music);
+  checkMedia(bgPath, "public/images/default.jpg", elements.background, "backgroundImage");
+  checkMedia(catPath, "public/videos/default-cat.mp4", elements.catVideo);
+  checkMedia(musicPath, "public/music/default.mp3", elements.music);
 
   elements.humidity.innerText = `${data.main.humidity}%`;
   elements.wind.innerText = `${data.wind.speed} m/s`;
