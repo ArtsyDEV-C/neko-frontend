@@ -233,9 +233,15 @@ async function fetchAirQuality(lat, lon) {
 }
 
 async function fetchUVIndex(lat, lon) {
-  const res = await fetch(`${oneCallURL}?lat=${lat}&lon=${lon}&exclude=minutely,hourly,daily,alerts&appid=${apiKey}`);
-  const data = await res.json();
-  elements.uvIndex.innerText = data.current.uvi;
+  const url = `https://api.openweathermap.org/data/2.5/uvi?appid=${apiKey}&lat=${lat}&lon=${lon}`;
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    elements.uvIndex.innerText = data.value;
+  } catch (err) {
+    console.warn("UV Index fetch failed", err);
+    elements.uvIndex.innerText = "--";
+  }
 }
 
 elements.searchBtn.onclick = () => {
