@@ -257,7 +257,9 @@ footer video {
   height: 60px;
   border-radius: 50%;
   object-fit: cover;
+  flex-shrink: 0;
 }
+
 
 .logo-title .title {
   font-size: 1.6rem;
