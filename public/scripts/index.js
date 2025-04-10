@@ -120,8 +120,11 @@ async function fetchWeather(city) {
   fetchUVIndex(data.coord.lat, data.coord.lon);
 }
 
-function getTimeOfDay() {
-  const hour = new Date().getHours();
+function getTimeOfDay(timezoneOffsetInSeconds) {
+  const utc = new Date().getTime() + new Date().getTimezoneOffset() * 60000;
+  const localTime = new Date(utc + 1000 * timezoneOffsetInSeconds);
+  const hour = localTime.getHours();
+
   if (hour >= 6 && hour < 17) return "day";
   if (hour >= 17 && hour < 20) return "evening";
   return "night";
@@ -150,7 +153,8 @@ function renderWeather(data) {
     tornado: "tornado"
   };
   const condition = conditionMap[rawCondition] || "clear";
-  const time = getTimeOfDay(); // returns "day", "evening", or "night"
+  const time = getTimeOfDay(data.timezone);
+
 
   const bgPath = `images/${condition}/${time}.jpg`;
   const catPath = `videos/${condition}/${time}-cat.mp4`;
