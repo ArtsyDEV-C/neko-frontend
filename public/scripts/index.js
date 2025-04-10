@@ -163,7 +163,7 @@ function renderWeather(data) {
   elements.icon.src = `https://openweathermap.org/img/wn/${weather.icon}@2x.png`;
 
   checkMedia(bgPath, "images/default.jpg", elements.background, "backgroundImage");
-  checkMedia(catPath, "videos/others/logo.mp4", elements.catVideo); // or videos/default-cat.mp4
+  checkMedia(catPath, "videos/others/logo.mp4", elements.catVideo); 
   checkMedia(musicPath, "music/default.mp3", elements.music);
 
   elements.humidity.innerText = `${data.main.humidity}%`;
