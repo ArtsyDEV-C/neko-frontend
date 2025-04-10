@@ -1,6 +1,6 @@
 // index.js – COMPLETE FINAL VERSION WITH ALL FEATURES AND FIXES
 
-const apiKey = "YOUR_API_KEY_HERE";
+const apiKey = "2149cbc5da7384b8ef7bcccf62b0bf68"
 const weatherURL = "https://api.openweathermap.org/data/2.5/weather";
 const forecastURL = "https://api.openweathermap.org/data/2.5/forecast";
 const airPollutionURL = "https://api.openweathermap.org/data/2.5/air_pollution";
