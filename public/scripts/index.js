@@ -110,7 +110,7 @@ function checkMedia(path, fallback, target, type = "src") {
 }
 
 async function fetchWeather(city) {
-  const url = `${weatherURL}?q=${city}&appid=${apiKey}&units=metric`;
+  const url = `${weatherURL}?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`;
   const res = await fetch(url);
   const data = await res.json();
   if (data.cod !== 200) return alert("City not found.");
