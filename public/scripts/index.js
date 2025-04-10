@@ -120,6 +120,14 @@ async function fetchWeather(city) {
   fetchUVIndex(data.coord.lat, data.coord.lon);
 }
 
+function getTimeOfDay() {
+  const hour = new Date().getHours();
+  if (hour >= 6 && hour < 17) return "day";
+  if (hour >= 17 && hour < 20) return "evening";
+  return "night";
+}
+
+
 function renderWeather(data) {
   const weather = data.weather[0];
   const condition = weather.main.toLowerCase();
