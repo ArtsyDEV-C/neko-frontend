@@ -1,0 +1,50 @@
+<!-- public/dashboard.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neko Global Weather Dashboard</title>
+
+  <!-- ✅ Favicon (optional) -->
+  <link rel="icon" href="/assets/logo.png" type="image/png" />
+
+  <!-- ✅ Basic Theme Styling -->
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    #root {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Optional: loading placeholder */
+    .loading-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-size: 1.2rem;
+      color: #ccc;
+    }
+  </style>
+  <script type="module" crossorigin src="/assets/dashboard-B5Qt9EMX.js"></script>
+</head>
+<body>
+  <!-- ✅ Root React Mount Point -->
+  <div id="root">
+    <div class="loading-screen">Loading dashboard...</div>
+  </div>
+
+  <!-- ✅ Load your React app -->
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+</html>

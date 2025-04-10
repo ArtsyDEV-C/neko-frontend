@@ -1,0 +1,166 @@
+/* === Base Reset === */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f4f7fa;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* === Top Navigation Bar === */
+#weather-nav {
+  background: #0066cc;
+  padding: 0.75rem 1rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+#weather-nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: color 0.2s ease;
+}
+
+#weather-nav a:hover {
+  color: #ffeb3b;
+}
+
+/* === Main Layout === */
+.map-page-container {
+  display: flex;
+  flex: 1;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* === Sidebar Controls === */
+.map-controls {
+  width: 280px;
+  background: #ffffff;
+  border-right: 1px solid #ddd;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.map-controls h2 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: #0066cc;
+}
+
+.tool-group {
+  margin-bottom: 1.25rem;
+}
+
+.tool-group h3 {
+  margin-bottom: 0.5rem;
+  color: #444;
+  font-size: 1rem;
+}
+
+.tool-group input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 0.4rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.tool-group button {
+  width: 100%;
+  padding: 0.5rem;
+  background: #0066cc;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background 0.3s ease;
+  margin-bottom: 0.4rem;
+}
+
+.tool-group button:hover {
+  background: #004a99;
+}
+
+/* === Main Map Section === */
+.map-display {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Map container */
+#weather-map {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+/* === Info Cards === */
+.weather-info-card,
+#route-summary {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 260px;
+  z-index: 999;
+  font-size: 0.95rem;
+}
+
+#route-summary {
+  bottom: 140px;
+}
+
+.weather-info-card h3,
+#route-summary h3 {
+  margin-bottom: 0.5rem;
+  color: #0066cc;
+}
+
+/* === Responsive Design === */
+@media (max-width: 768px) {
+  .map-page-container {
+    flex-direction: column;
+  }
+
+  .map-controls {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #ccc;
+    max-height: 250px;
+    overflow-y: auto;
+  }
+
+  .map-display {
+    flex: 1;
+  }
+
+  .weather-info-card,
+  #route-summary {
+    width: 90%;
+    right: 5%;
+    left: 5%;
+  }
+
+  #weather-nav {
+    justify-content: center;
+  }
+}

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Neko Chatbot</title>
+  <link rel="stylesheet" href="styles/chatbot.css" />
+</head>
+<body>
+  <div class="chatbot-container">
+
+    <!-- 📜 Sidebar (only shown if user is logged in) -->
+    <aside class="chat-sidebar">
+      <h2>📜 Chat History</h2>
+      <ul id="chat-history"></ul>
+      <!-- Guest message (will be shown if the user is not logged in) -->
+      <div id="guest-message" style="display:none;">
+        <p>Please log in to access chat history and export functionality.</p>
+      </div>
+    </aside>
+
+    <!-- 💬 Main Chat Interface -->
+    <main class="chat-main">
+
+      <!-- 🧠 AI Header -->
+      <header class="chat-header">
+        <h1>Hi, I’m <span class="highlight">Neko</span> – your Weather AI</h1>
+        <div class="chat-controls">
+          <button id="mute-toggle" title="Toggle voice">🔊 Mute</button>
+          <button id="export-chat" title="Download chat" disabled>💾 Export</button>
+        </div>
+      </header>
+
+      <!-- 🔗 Navigation Bar -->
+      <nav class="chat-nav">
+        <a href="index.html">🏠 Home</a>
+        <a href="dashboard.html">📊 Dashboard</a>
+        <a href="weatherMap.html">🗺️ Weather Map</a>
+        <a href="business.html">🏭 Industry</a>
+        <a href="weatherAdvisor.html">🧭 Advisor</a>
+      </nav>
+
+      <!-- 💬 Chat Display Area -->
+      <section id="chat-window" class="chat-window" aria-live="polite">
+        <!-- Chat messages will be inserted here -->
+        <div id="loading-indicator" style="display:none;">Neko is typing...</div>
+      </section>
+
+      <!-- 🧾 Input Form -->
+      <form id="chat-form" class="chat-form">
+        <textarea id="chat-input" placeholder="Type your message..." rows="1" required></textarea>
+        <button type="submit" id="send-btn" title="Send">📤 Send</button>
+        <button type="button" id="mic-btn" title="Speak">🎤</button>
+        <button type="button" id="clear-chat" title="Clear chat">🧹</button>
+      </form>
+
+      <!-- 🌦️ Scenario Advice Section -->
+<section class="scenario-section">
+  <h2>🌐 Weather Scenario Advice</h2>
+
+  <form id="scenario-form" class="scenario-form">
+    <div class="form-row">
+      <input type="text" id="scenario-weather" placeholder="Weather Type (e.g., Fog)" required />
+      <input type="text" id="scenario-industry" placeholder="Industry (optional)" />
+      <input type="text" id="scenario-severity" placeholder="Severity (optional)" />
+      <input type="text" id="scenario-category" placeholder="Category (optional)" />
+      <button type="submit">📡 Get Advice</button>
+    </div>
+  </form>
+
+  <!-- Advice Display Area -->
+  <div id="scenario-results" class="scenario-results">
+    <!-- Advice cards will be injected here -->
+  </div>
+</section>
+
+
+    </main>
+  </div>
+
+  <script src="scripts/chatbot.js"></script>
+</body>
+</html>
