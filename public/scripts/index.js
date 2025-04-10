@@ -289,9 +289,21 @@ if (recognition) {
 }
 
 elements.themeSwitcher.onchange = e => {
-  document.body.className = e.target.value;
-  localStorage.setItem("theme", e.target.value);
+  const selectedTheme = e.target.value;
+  document.body.className = selectedTheme;
+  localStorage.setItem("theme", selectedTheme);
+
+  // If theme is not default, reset media manually
+  if (selectedTheme !== "theme-default") {
+    elements.background.style.backgroundImage = ""; // Remove dynamic image
+    elements.catVideo.src = "videos/others/logo.mp4";
+    elements.music.src = "music/default.mp3";
+  } else {
+    // Re-fetch weather for current city to re-apply dynamic background
+    fetchWeather(localStorage.getItem("lastCity") || "Chennai");
+  }
 };
+
 
 elements.langSelect.onchange = () => {
   const lang = elements.langSelect.value;
