@@ -130,8 +130,28 @@ function getTimeOfDay() {
 
 function renderWeather(data) {
   const weather = data.weather[0];
-  const condition = weather.main.toLowerCase();
-  const time = getTimeOfDay();
+  const rawCondition = weather.main.toLowerCase();
+
+  const conditionMap = {
+    clouds: "cloudy",
+    clear: "clear",
+    rain: "rainy",
+    drizzle: "drizzle",
+    snow: "snowy",
+    mist: "mist",
+    fog: "foggy",
+    haze: "hazy",
+    smoke: "smoke",
+    dust: "dusty",
+    sand: "sand",
+    ash: "ash",
+    squall: "squall",
+    thunderstorm: "thunderstorm",
+    tornado: "tornado"
+  };
+  const condition = conditionMap[rawCondition] || "clear";
+  const time = getTimeOfDay(); // returns "day", "evening", or "night"
+
   const bgPath = `images/${condition}/${time}.jpg`;
   const catPath = `videos/${condition}/${time}-cat.mp4`;
   const musicPath = `music/${condition}.mp3`;
@@ -142,9 +162,9 @@ function renderWeather(data) {
   elements.description.innerText = weather.description;
   elements.icon.src = `https://openweathermap.org/img/wn/${weather.icon}@2x.png`;
 
-  checkMedia(bgPath, "public/images/default.jpg", elements.background, "backgroundImage");
-  checkMedia(catPath, "public/videos/default-cat.mp4", elements.catVideo);
-  checkMedia(musicPath, "public/music/default.mp3", elements.music);
+  checkMedia(bgPath, "images/default.jpg", elements.background, "backgroundImage");
+  checkMedia(catPath, "videos/others/logo.mp4", elements.catVideo); // or videos/default-cat.mp4
+  checkMedia(musicPath, "music/default.mp3", elements.music);
 
   elements.humidity.innerText = `${data.main.humidity}%`;
   elements.wind.innerText = `${data.wind.speed} m/s`;
@@ -153,6 +173,7 @@ function renderWeather(data) {
   elements.sunrise.innerText = new Date(data.sys.sunrise * 1000).toLocaleTimeString();
   elements.sunset.innerText = new Date(data.sys.sunset * 1000).toLocaleTimeString();
 }
+
 
 async function fetchForecast(lat, lon) {
   const res = await fetch(`${forecastURL}?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`);
