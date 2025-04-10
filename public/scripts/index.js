@@ -43,6 +43,7 @@ document.body.className = elements.themeSwitcher.value;
 const translations = {
   en: {
     language: "🌍 Language:",
+    hourly: "Hourly Forecast",
     forecast: "10-Day Forecast",
     aqi: "Air Quality Index",
     uv: "UV Index",
@@ -52,6 +53,7 @@ const translations = {
   },
   hi: {
     language: "🌍 भाषा:",
+    hourly: "घंटेवार पूर्वानुमान",
     forecast: "10-दिवसीय पूर्वानुमान",
     aqi: "वायु गुणवत्ता सूचकांक",
     uv: "यूवी सूचकांक",
@@ -61,6 +63,7 @@ const translations = {
   },
   ta: {
     language: "🌍 மொழி:",
+    hourly: "மணிநேர வானிலை",
     forecast: "10 நாள் வானிலை",
     aqi: "காற்று தர மதிப்பெண்",
     uv: "UV குறியீடு",
