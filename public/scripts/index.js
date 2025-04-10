@@ -4,7 +4,7 @@ const apiKey = "2149cbc5da7384b8ef7bcccf62b0bf68"
 const weatherURL = "https://api.openweathermap.org/data/2.5/weather";
 const forecastURL = "https://api.openweathermap.org/data/2.5/forecast";
 const airPollutionURL = "https://api.openweathermap.org/data/2.5/air_pollution";
-const oneCallURL = "https://api.openweathermap.org/data/3.0/onecall";
+const oneCallURL = "https://api.openweathermap.org/data/2.5/onecall";
 
 const elements = {
   cityInput: document.getElementById("search-input"),
