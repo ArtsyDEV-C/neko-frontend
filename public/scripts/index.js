@@ -76,8 +76,12 @@ function updateLabels(lang) {
   const label = document.querySelector("label[for='language-switcher']");
   if (label) label.textContent = t.language;
 
-  const forecast = document.querySelector(".forecast-section h2");
-  if (forecast) forecast.textContent = t.forecast;
+  const hourlyTitle = document.getElementById("hourly-title");
+const dailyTitle = document.getElementById("daily-title");
+
+if (hourlyTitle) hourlyTitle.textContent = lang === "hi" ? "घंटेवार पूर्वानुमान" : lang === "ta" ? "மணிநேர வானிலை" : "Hourly Forecast";
+if (dailyTitle) dailyTitle.textContent = t.forecast;
+
 
   const aqi = document.querySelector(".air-quality-section h2");
   if (aqi) aqi.textContent = t.aqi;
