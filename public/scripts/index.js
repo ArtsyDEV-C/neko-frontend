@@ -72,14 +72,29 @@ const translations = {
 
 function updateLabels(lang) {
   const t = translations[lang];
-  document.querySelector("label[for='language-switcher']").textContent = t.language;
-  document.querySelector(".forecast-section h2").textContent = t.forecast;
-  document.querySelector(".air-quality-section h2").textContent = t.aqi;
-  document.querySelector(".uv-index-section h2").textContent = t.uv;
-  document.querySelector(".wind-section h2").textContent = t.wind;
-  document.querySelector(".humidity-section h2").textContent = t.humidity;
-  document.querySelector(".events-section h2").textContent = t.events;
+
+  const label = document.querySelector("label[for='language-switcher']");
+  if (label) label.textContent = t.language;
+
+  const forecast = document.querySelector(".forecast-section h2");
+  if (forecast) forecast.textContent = t.forecast;
+
+  const aqi = document.querySelector(".air-quality-section h2");
+  if (aqi) aqi.textContent = t.aqi;
+
+  const uv = document.querySelector(".uv-index-section h2");
+  if (uv) uv.textContent = t.uv;
+
+  const wind = document.querySelector(".wind-section h2");
+  if (wind) wind.textContent = t.wind;
+
+  const humidity = document.querySelector(".humidity-section h2");
+  if (humidity) humidity.textContent = t.humidity;
+
+  const events = document.querySelector(".events-section h2");
+  if (events) events.textContent = t.events;
 }
+
 
 function checkMedia(path, fallback, target, type = "src") {
   fetch(path).then(res => {
