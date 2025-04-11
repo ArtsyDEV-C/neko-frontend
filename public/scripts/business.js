@@ -97,9 +97,9 @@ function setBackground(industry) {
   const safeIndustry = industry.toLowerCase().replace(/[^a-z0-9]+/gi, "-");
 
   if (staticIndustries.map(i => i.toLowerCase()).includes(industry.toLowerCase())) {
-    background.src = `videos/${safeIndustry}.mp4`;
+    background.src = `assets/${safeIndustry}.mp4`;
   } else {
-    background.src = `videos/${safeIndustry}/${currentWeatherType.toLowerCase()}.mp4`;
+    background.src = `assets/${safeIndustry}/${currentWeatherType.toLowerCase()}.mp4`;
   }
   background.load();
 }
