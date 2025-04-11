@@ -3,22 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Industry Weather Analytics | Neko Global</title>
-  <link rel="icon" href="images/favicon.ico" />
+  <title>Neko Global Weather – Industry Forecasts</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+
+  <!-- Google Fonts & Font Awesome -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <!-- Custom CSS -->
   <link rel="stylesheet" href="styles/business.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
-  <!-- 🔍 Dynamic Background Video -->
+  <!-- 🎥 Animated Background -->
   <video autoplay muted loop id="background-video"></video>
 
-  <!-- 🧭 Navigation Bar -->
+  <!-- 🧭 Navbar -->
   <nav class="navbar">
-    <div class="logo-title">
-      <video src="videos/others/logo.mp4" autoplay muted loop class="logo"></video>
-      <h1 class="title">Neko Global Weather</h1>
+    <div class="logo-section">
+      <video src="videos/others/logo.mp4" autoplay muted loop class="logo-video"></video>
+      <h1 class="site-title">Neko Global Weather</h1>
     </div>
     <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
@@ -30,37 +36,34 @@
     </ul>
   </nav>
 
-  <!-- 🏭 Industry Selector -->
-  <section class="selector">
-    <label for="industry-select">📊 Select Industry:</label>
+  <!-- 🔍 Search and Industry Selection -->
+  <section class="search-section">
+    <input type="text" id="search-city" placeholder="Search City or Country..." />
     <select id="industry-select">
-      <option value="agriculture">Agriculture</option>
-      <option value="logistics">Logistics</option>
-      <option value="construction">Construction</option>
-      <option value="tourism">Tourism</option>
-      <option value="healthcare">Healthcare</option>
-      <option value="retail">Retail</option>
-      <option value="education">Education</option>
-      <option value="energy">Energy</option>
-      <option value="event">Event Management</option>
+      <option disabled selected>Select Industry</option>
+      <option value="Agriculture">Agriculture</option>
+      <option value="Logistics">Logistics</option>
+      <option value="Construction">Construction</option>
+      <option value="Tourism">Tourism</option>
+      <option value="Healthcare">Healthcare</option>
+      <option value="Retail">Retail</option>
+      <option value="Education">Education</option>
+      <option value="Energy">Energy</option>
+      <option value="Event Management">Event Management</option>
     </select>
+    <button id="analyze-btn">Analyze</button>
   </section>
 
-  <!-- 📈 Analytics Card -->
-  <section class="analytics-card">
-    <h2 id="industry-title">Industry Weather Analytics</h2>
-    <div class="weather-stats">
-      <div><i class="fas fa-cloud-sun-rain animated-icon"></i> <strong>Scenario:</strong> <span id="scenario">--</span></div>
-      <div><i class="fas fa-lightbulb animated-icon"></i> <strong>Advice:</strong> <span id="advice">--</span></div>
-      <div><i class="fas fa-bell animated-icon"></i> <strong>Urgency:</strong> <span id="responseUrgency">--</span></div>
-      <div><i class="fas fa-users animated-icon"></i> <strong>Sensitive Groups:</strong> <span id="sensitiveGroups">--</span></div>
-      <div><i class="fas fa-shield-alt animated-icon"></i> <strong>Severity:</strong> <span id="severity">--</span></div>
-      <div><i class="fas fa-search-location animated-icon"></i> <strong>Source:</strong> <span id="sourceReliability">--</span></div>
+  <!-- 🧾 Results Area -->
+  <section class="results-area">
+    <h2 id="scenario-title">Industry Weather Scenarios</h2>
+    <div id="scenario-container" class="scenario-container">
+      <!-- Cards rendered by JS -->
     </div>
   </section>
 
-  <!-- 📜 Script -->
+  <!-- 📜 JavaScript -->
   <script src="scripts/business.js"></script>
-
 </body>
 </html>
+
