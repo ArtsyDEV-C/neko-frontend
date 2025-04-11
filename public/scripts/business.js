@@ -10,7 +10,7 @@ let currentWeatherType = "";
 let allScenarios = [];
 
 // Load JSON file
-fetch("weatherScenarios.json")
+fetch("/weatherScenarios.json")
   .then(res => res.json())
   .then(data => {
     allScenarios = data;
