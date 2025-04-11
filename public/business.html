@@ -18,7 +18,8 @@
 <body>
 
   <!-- 🎥 Animated Background -->
-  <video autoplay muted loop id="background-video"></video>
+  <video autoplay muted loop id="industry-background"></video>
+
 
   <!-- 🧭 Navbar -->
   <nav class="navbar">
@@ -38,8 +39,8 @@
 
   <!-- 🔍 Search and Industry Selection -->
   <section class="search-section">
-    <input type="text" id="search-city" placeholder="Search City or Country..." />
-    <select id="industry-select">
+    <input type="text" id="city-input" placeholder="Search City or Country..." />
+  <select id="industry-select">
       <option disabled selected>Select Industry</option>
       <option value="Agriculture">Agriculture</option>
       <option value="Logistics">Logistics</option>
@@ -51,8 +52,8 @@
       <option value="Energy">Energy</option>
       <option value="Event Management">Event Management</option>
     </select>
-    <button id="analyze-btn">Analyze</button>
-  </section>
+    <button id="city-button">Analyze</button>
+ </section>
 
   <!-- 🧾 Results Area -->
   <section class="results-area">
