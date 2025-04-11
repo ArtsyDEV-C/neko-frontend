@@ -18,7 +18,7 @@ fetch("weatherScenarios.json")
 
 // Get weatherType using city name
 async function getWeatherType(city) {
-  const apiKey = "YOUR_API_KEY"; // Replace with your actual API key
+  const apiKey = "2149cbc5da7384b8ef7bcccf62b0bf68"; // Replace with your actual API key
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
   try {
     const res = await fetch(url);
