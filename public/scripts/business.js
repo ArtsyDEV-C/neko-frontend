@@ -1,4 +1,4 @@
-// business.js – Final Optimized Version
+// business.js – Final Optimized Version with Case-Insensitive Matching and Tag Icons
 
 const scenarioContainer = document.getElementById("scenario-container");
 const industrySelect = document.getElementById("industry-select");
@@ -56,7 +56,8 @@ async function getWeatherType(city) {
 // Render scenarios
 function renderScenarios(industry) {
   const matched = allScenarios.filter(
-    s => s.industry === industry && s.weatherType === currentWeatherType
+    s => s.industry.toLowerCase() === industry.toLowerCase() &&
+         s.weatherType.toLowerCase() === currentWeatherType.toLowerCase()
   );
   scenarioContainer.innerHTML = "";
 
@@ -74,10 +75,10 @@ function renderScenarios(industry) {
       <p><strong>Advice:</strong> ${item.advice}</p>
       <div class="tags">
         <span class="tag severity ${item.severity.toLowerCase()}">${item.severity}</span>
-        <span class="tag">${item.weatherType}</span>
-        <span class="tag">${item.responseUrgency}</span>
-        <span class="tag">${item.sensitiveGroups}</span>
-        <span class="tag">${item.sourceReliability}</span>
+        <span class="tag">🌦 ${item.weatherType}</span>
+        <span class="tag">⚠️ ${item.responseUrgency}</span>
+        <span class="tag">🧒 ${item.sensitiveGroups}</span>
+        <span class="tag">📊 ${item.sourceReliability}</span>
       </div>
     `;
     scenarioContainer.appendChild(card);
@@ -93,10 +94,12 @@ function setBackground(industry) {
     "Energy",
     "Event Management"
   ];
-  if (staticIndustries.includes(industry)) {
-    background.src = `videos/${industry.toLowerCase().replace(/ & | /g, "-")}.mp4`;
+  const safeIndustry = industry.toLowerCase().replace(/[^a-z0-9]+/gi, "-");
+
+  if (staticIndustries.map(i => i.toLowerCase()).includes(industry.toLowerCase())) {
+    background.src = `videos/${safeIndustry}.mp4`;
   } else {
-    background.src = `videos/${industry.toLowerCase().replace(/ & | /g, "-")}/${currentWeatherType.toLowerCase()}.mp4`;
+    background.src = `videos/${safeIndustry}/${currentWeatherType.toLowerCase()}.mp4`;
   }
   background.load();
 }
@@ -120,4 +123,3 @@ industrySelect.onchange = () => {
     renderScenarios(industry);
   }
 };
-
