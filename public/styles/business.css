@@ -1,35 +1,145 @@
-/* Business Analytics Container */
-#business-info-container {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    max-width: 800px;
-    margin: 20px auto;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+/* === RESET & BASE === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-#industry-selection {
-    margin-bottom: 20px;
+body, html {
+  width: 100%;
+  height: 100%;
+  font-family: 'Poppins', sans-serif;
+  color: #fff;
+  background-color: #000; /* Fallback background */
+  overflow-x: hidden;
 }
 
-#industry-selection label {
-    font-size: 16px;
-    font-weight: bold;
-    margin-right: 10px;
+/* === BACKGROUND VIDEO === */
+#background-video {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  filter: brightness(0.7) contrast(1.1);
 }
 
-#industry-selection select {
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+/* === OVERLAY CONTAINER === */
+.overlay {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(5px);
 }
 
-#industry-data {
-    margin-top: 20px;
+/* === HEADER === */
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
 }
 
-#industry-weather-data p {
-    font-size: 16px;
-    margin-bottom: 10px;
+.header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
 }
+
+.industry-select-wrapper {
+  margin-top: 1rem;
+}
+
+.industry-select-wrapper label {
+  font-size: 1rem;
+  margin-right: 0.5rem;
+}
+
+#industry-select {
+  padding: 0.6rem 1rem;
+  border-radius: 1rem;
+  border: none;
+  background: #ffffff;
+  color: #333;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+/* === ANALYTICS SECTION === */
+.analytics-section {
+  max-width: 1200px;
+  margin: auto;
+  padding-top: 1rem;
+}
+
+.analytics-section h2 {
+  font-size: 1.6rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #fff;
+  text-shadow: 0 0 6px rgba(0,0,0,0.5);
+}
+
+/* === SCENARIO CARDS === */
+.scenario-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  padding: 0 1rem;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  transition: transform 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.8rem;
+  color: #fff;
+}
+
+.card p {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  color: #eee;
+  line-height: 1.4;
+}
+
+.card .highlight {
+  font-weight: bold;
+  color: #4fc3f7;
+}
+
+/* === RESPONSIVE TWEAKS === */
+@media (max-width: 768px) {
+  .header h1 {
+    font-size: 1.5rem;
+  }
+
+  #industry-select {
+    font-size: 0.9rem;
+    padding: 0.5rem 0.8rem;
+  }
+
+  .card {
+    padding: 1rem;
+  }
+
+  .analytics-section h2 {
+    font-size: 1.3rem;
+  }
+}
+
