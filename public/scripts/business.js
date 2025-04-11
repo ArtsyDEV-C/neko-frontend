@@ -1,116 +1,123 @@
-// business.js – Final Optimized Version for Neko Global Weather
+// business.js – Final Optimized Version
 
+const scenarioContainer = document.getElementById("scenario-container");
 const industrySelect = document.getElementById("industry-select");
-const weatherTypeSelect = document.getElementById("weather-type-select");
-const scenarioCardsContainer = document.getElementById("scenario-cards");
-const backgroundVideo = document.getElementById("background-video");
+const cityInput = document.getElementById("city-input");
+const cityButton = document.getElementById("city-button");
+const background = document.getElementById("industry-background");
 
-let allScenarios = {};
+let currentWeatherType = "";
+let allScenarios = [];
 
-const staticIndustries = ["healthcare", "retail", "education", "energy", "event manager"];
-const animatedIndustries = ["agriculture", "logistics", "construction", "tourism"];
+// Load JSON file
+fetch("weatherScenarios.json")
+  .then(res => res.json())
+  .then(data => {
+    allScenarios = data;
+  });
 
-async function loadWeatherScenarios() {
+// Get weatherType using city name
+async function getWeatherType(city) {
+  const apiKey = "YOUR_API_KEY"; // Replace with your actual API key
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
   try {
-    const res = await fetch("weatherScenarios.json");
-    allScenarios = await res.json();
-    populateIndustryOptions();
-  } catch (error) {
-    console.error("Failed to load scenario data:", error);
+    const res = await fetch(url);
+    const data = await res.json();
+    if (!data.weather) throw new Error("Invalid weather data");
+    const main = data.weather[0].main.toLowerCase();
+
+    // Map OpenWeather condition to our weatherTypes
+    const map = {
+      clear: "Clear",
+      clouds: "Fog",
+      rain: "Rain",
+      drizzle: "Rain",
+      thunderstorm: "Thunderstorm",
+      snow: "Snow",
+      mist: "Fog",
+      smoke: "Air Pollution",
+      haze: "Haze",
+      dust: "Air Pollution",
+      sand: "Air Pollution",
+      ash: "Air Pollution",
+      squall: "Wind",
+      tornado: "Storm"
+    };
+
+    currentWeatherType = map[main] || "Clear";
+    return currentWeatherType;
+  } catch (e) {
+    console.error("Weather fetch failed", e);
+    currentWeatherType = "Clear";
+    return currentWeatherType;
   }
 }
 
-function populateIndustryOptions() {
-  industrySelect.innerHTML = '<option value="">Select Industry</option>';
-  Object.keys(allScenarios).forEach(industry => {
-    const option = document.createElement("option");
-    option.value = industry;
-    option.textContent = capitalize(industry);
-    industrySelect.appendChild(option);
-  });
-}
+// Render scenarios
+function renderScenarios(industry) {
+  const matched = allScenarios.filter(
+    s => s.industry === industry && s.weatherType === currentWeatherType
+  );
+  scenarioContainer.innerHTML = "";
 
-function populateWeatherTypes(industry) {
-  weatherTypeSelect.innerHTML = '<option value="">Select Weather Type</option>';
-  if (!allScenarios[industry]) return;
-
-  Object.keys(allScenarios[industry]).forEach(weatherType => {
-    const option = document.createElement("option");
-    option.value = weatherType;
-    option.textContent = capitalize(weatherType.replace(/_/g, " "));
-    weatherTypeSelect.appendChild(option);
-  });
-}
-
-function updateBackground(industry, weatherType) {
-  let videoPath;
-
-  if (staticIndustries.includes(industry)) {
-    videoPath = `videos/${industry}.mp4`; // static single background
-  } else if (animatedIndustries.includes(industry)) {
-    videoPath = `videos/${industry}/${weatherType}.mp4`; // weather-specific background
-  } else {
-    videoPath = `videos/default.mp4`;
-  }
-
-  backgroundVideo.src = videoPath;
-  backgroundVideo.load();
-}
-
-function renderScenarioCards(industry, weatherType) {
-  scenarioCardsContainer.innerHTML = "";
-
-  if (!allScenarios[industry] || !allScenarios[industry][weatherType]) {
-    scenarioCardsContainer.innerHTML = "<p>No scenarios available.</p>";
+  if (!matched.length) {
+    scenarioContainer.innerHTML = `<p class="no-results">No relevant scenarios found for ${industry} during ${currentWeatherType}.</p>`;
     return;
   }
 
-  const cards = allScenarios[industry][weatherType];
-
-  cards.forEach(card => {
-    const cardEl = document.createElement("div");
-    cardEl.className = "scenario-card";
-
-    cardEl.innerHTML = `
-      <div class="icon-container">
-        <img src="icons/${weatherType}.gif" alt="${weatherType} icon" />
-      </div>
-      <div class="card-details">
-        <p><strong>Scenario:</strong> ${card.scenario}</p>
-        <p><strong>Advice:</strong> ${card.advice}</p>
-        <p><strong>Urgency:</strong> ${capitalize(card.responseUrgency)}</p>
-        <p><strong>Groups Affected:</strong> ${card.sensitiveGroups}</p>
-        <p><strong>Source:</strong> ${capitalize(card.sourceReliability)}</p>
-        <p><strong>Severity:</strong> ${capitalize(card.severity)}</p>
+  matched.forEach(item => {
+    const card = document.createElement("div");
+    card.className = "scenario-card";
+    card.innerHTML = `
+      <h3>${item.category}</h3>
+      <p><strong>Scenario:</strong> ${item.scenario}</p>
+      <p><strong>Advice:</strong> ${item.advice}</p>
+      <div class="tags">
+        <span class="tag severity ${item.severity.toLowerCase()}">${item.severity}</span>
+        <span class="tag">${item.weatherType}</span>
+        <span class="tag">${item.responseUrgency}</span>
+        <span class="tag">${item.sensitiveGroups}</span>
+        <span class="tag">${item.sourceReliability}</span>
       </div>
     `;
-
-    scenarioCardsContainer.appendChild(cardEl);
+    scenarioContainer.appendChild(card);
   });
 }
 
-industrySelect.addEventListener("change", () => {
-  const industry = industrySelect.value;
-  if (!industry) return;
-
-  populateWeatherTypes(industry);
-  scenarioCardsContainer.innerHTML = "";
-  backgroundVideo.src = "videos/default.mp4"; // Reset background
-});
-
-weatherTypeSelect.addEventListener("change", () => {
-  const industry = industrySelect.value;
-  const weatherType = weatherTypeSelect.value;
-
-  if (industry && weatherType) {
-    updateBackground(industry, weatherType);
-    renderScenarioCards(industry, weatherType);
+// Set background
+function setBackground(industry) {
+  const staticIndustries = [
+    "Healthcare",
+    "Retail",
+    "Education",
+    "Energy",
+    "Event Management"
+  ];
+  if (staticIndustries.includes(industry)) {
+    background.src = `videos/${industry.toLowerCase().replace(/ & | /g, "-")}.mp4`;
+  } else {
+    background.src = `videos/${industry.toLowerCase().replace(/ & | /g, "-")}/${currentWeatherType.toLowerCase()}.mp4`;
   }
-});
-
-function capitalize(str) {
-  return str.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+  background.load();
 }
 
-// Initialize
-loadWeatherScenarios();
+// City search handler
+cityButton.onclick = async () => {
+  const city = cityInput.value.trim();
+  if (!city) return alert("Please enter a city name");
+  await getWeatherType(city);
+  const industry = industrySelect.value;
+  if (industry) {
+    setBackground(industry);
+    renderScenarios(industry);
+  }
+};
+
+industrySelect.onchange = () => {
+  const industry = industrySelect.value;
+  if (industry && currentWeatherType) {
+    setBackground(industry);
+    renderScenarios(industry);
+  }
+};
+
